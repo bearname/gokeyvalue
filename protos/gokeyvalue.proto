@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package goKeyValue;
+
+option go_package = "./;protos";
+//import "google/protobuf/empty.proto";
+
+message Item {
+  string key = 1;
+  string value = 2;
+}
+
+message ItemValue {
+  string value = 1;
+}
+message NotifyEvent {
+  string key = 1;
+  string value = 2;
+  uint64 masterId = 3;
+  repeated uint64 vectorClock = 4;
+}
+
+message GetKey {
+  string key = 1;
+}
+
+message Success {
+  bool success = 1;
+}
+
+service KeyValueService {
+  rpc Notify (NotifyEvent) returns (Success);
+  rpc Get(GetKey) returns (ItemValue);
+  rpc Set(Item)  returns (Success);
+  rpc DeleteKey(GetKey) returns (Success);
+}
